@@ -2,14 +2,16 @@ package test1
 
 object bank {
 
-  class account(b:Int){
+  class account(NIC:String, accNo:Int, bal:Int){
 
-    def balance = b
+    def NIC_No = NIC
+    def Acc_No = accNo
+    def balance = bal
 
 
-    def neg = new account(-balance)
+    def neg = new account(NIC_No, Acc_No, -balance)
 
-    def +(a:account) = new account(this.balance + a.balance)
+    def +(a:account) = new account(NIC_No, Acc_No, this.balance + a.balance)
 
     def interest:Double = if(balance > 0) this.balance+this.balance*0.05 else this.balance-this.balance*0.1
 
@@ -19,17 +21,23 @@ object bank {
 
   def main(args: Array[String]): Unit = {
 
-    var a1 = new account(200)
-    var a2 = new account(500)
-    var a3 = new account(-100)
-    var a4 = a1+a2+a3
+
+
+    var a1 = new account("001v", 1, 200)
+    var a2 = new account("002v", 2, 500)
+    var a3 = new account("003v", 3, -100)
+
+    var bank:List[account]=List(a1, a2, a3)
+
+    val totalBalance=(b:List[account])=> b.reduce((x,y)=>x+y)
+    val finalBalance=(b:List[account])=> b.map(_.interest)
+
+
 
 
     println("negation of balance : "+a1.neg)
-    println("sum of a1, a2, a3 = " + a4)
-    println("a1 final balance = "+ a1.interest)
-    println("a2 final balance = "+ a2.interest)
-    println("a3 final balance = "+ a3.interest)
+    println("sum of acc balances : " + totalBalance(bank))
+    println("final balances of accounts : "+finalBalance(bank))
   }
 
 }
